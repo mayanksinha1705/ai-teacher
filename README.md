@@ -413,15 +413,14 @@ The learner profile is stored separately in the browser using `localStorage`.
 # 📺 Demo
 
 **Demo Video:**  
-[Add the YouTube/Loom demo link here.](https://youtu.be/4luB5zCSsKw)
+[Click here to watch demo video.](https://youtu.be/4luB5zCSsKw)
+https://youtu.be/4luB5zCSsKw
 
 ---
 
-# 👥 Team
+# 👥 Team - Codewithmay 
 
 **Team Leader:** Mayank Sinha
-
-_Add team members here if applicable._
 
 ---
 
