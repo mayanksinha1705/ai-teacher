@@ -413,10 +413,7 @@ The learner profile is stored separately in the browser using `localStorage`.
 # 📺 Demo
 
 **Demo Video:**  
-Add the YouTube/Loom demo link here.
-
-**Live Demo:**  
-Add the deployed application link here.
+[Add the YouTube/Loom demo link here.](https://youtu.be/4luB5zCSsKw)
 
 ---
 
