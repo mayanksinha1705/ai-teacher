@@ -1,0 +1,1555 @@
+:root {
+  /* Obsidian Intelligence — dark workstation aesthetic with a single
+     electric-mint accent, matching the approved reference design. */
+  --bg: #0a0d12;
+  --surface: #111620;
+  --surface-elevated: #182030;
+  --surface-container: #1d2530;
+
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --border-mint: rgba(17, 229, 158, 0.3);
+
+  --primary: #11e59e;
+  --primary-bright: #70ffbe;
+  --on-primary: #003824;
+  --secondary-deep: #083e2d;
+  --tertiary-slate: #263346;
+  --amber: #f59e0b;
+  --amber-wash: rgba(245, 158, 11, 0.12);
+  --danger: #ff8a80;
+  --danger-wash: rgba(255, 138, 128, 0.12);
+
+  --text-primary: #ffffff;
+  --text-body: #cbd5e1;
+  --text-meta: #64748b;
+
+  --radius-sm: 0.75rem;
+  --radius: 1rem;
+  --radius-lg: 1.5rem;
+  --radius-full: 9999px;
+
+  --shadow-card: 0 8px 32px -4px rgba(0, 0, 0, 0.6);
+  --glow-primary: 0 0 24px -6px rgba(17, 229, 158, 0.25);
+
+  --font-body: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input {
+  font-family: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Classroom shell: the classroom/lesson column on the left and the AI
+   Teacher panel docked as a permanent column on the right (see
+   ".teacher-panel" below). The page itself scrolls; the teacher panel is
+   sticky so it stays pinned to the viewport as the lesson content scrolls
+   underneath it. Collapses to a single column on narrow screens, where
+   the teacher panel becomes a floating widget instead (see the
+   max-width: 900px query at the bottom of this file). */
+.shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 30%);
+  align-items: start;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 20px 72px;
+}
+
+/* Top nav */
+.nav {
+  width: 100%;
+  max-width: 1280px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 0;
+  flex-wrap: wrap;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  background: var(--primary);
+  color: var(--on-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.nav-mark svg {
+  width: 20px;
+  height: 20px;
+}
+
+.nav-wordmark {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.nav-badge {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-meta);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-full);
+  padding: 3px 9px;
+}
+
+.engine-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  color: var(--text-body);
+  background: var(--secondary-deep);
+  border: 1px solid var(--border-mint);
+  border-radius: var(--radius-full);
+  padding: 7px 14px;
+}
+
+.engine-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--primary);
+  flex-shrink: 0;
+}
+
+.engine-offline .engine-dot {
+  background: var(--danger);
+}
+
+.engine-offline {
+  border-color: rgba(255, 138, 128, 0.3);
+}
+
+.engine-checking .engine-dot {
+  background: var(--text-meta);
+}
+
+/* Hero */
+.hero {
+  width: 100%;
+  max-width: 1280px;
+  padding: 12px 0 28px;
+}
+
+.hero-title {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--text-primary);
+  margin: 0 0 10px;
+}
+
+.hero-accent {
+  color: var(--primary);
+}
+
+.hero-subtitle {
+  font-size: 1rem;
+  color: var(--text-meta);
+  margin: 0;
+  max-width: 56ch;
+}
+
+/* Main */
+.main {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.main-wide {
+  max-width: 1280px;
+}
+
+.error-banner {
+  width: 100%;
+  max-width: 1280px;
+  background: var(--danger-wash);
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+}
+
+.loading-text {
+  color: var(--text-meta);
+  text-align: center;
+  padding: 32px 0;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+
+.exit-button {
+  align-self: flex-start;
+  padding: 8px 16px;
+  font-size: 0.82rem;
+}
+
+/* Section tags (numbered eyebrow labels) */
+.section-tag-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.section-tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--primary);
+}
+
+.section-tag-trailing {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-meta);
+}
+
+/* Stat strip */
+.stat-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.stat-chip {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.status-label {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--text-meta);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.status-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.status-active {
+  color: var(--primary);
+}
+
+/* Cards (shared) */
+.topic-selector,
+.material-upload,
+.lesson-plan,
+.lesson-step,
+.assessment,
+.report,
+.learner-profile {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Topic Selector */
+.topic-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.topic-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.topic-input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.topic-input::placeholder {
+  color: var(--text-meta);
+}
+
+.topic-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(17, 229, 158, 0.12);
+}
+
+.start-button {
+  padding: 14px 22px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--primary);
+  color: var(--on-primary);
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: box-shadow 0.15s ease, transform 0.1s ease, filter 0.15s ease;
+}
+
+.start-button:hover:not(:disabled) {
+  filter: brightness(1.08);
+  box-shadow: var(--glow-primary);
+}
+
+.start-button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.start-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.suggested-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  padding: 8px 14px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-elevated);
+  color: var(--text-body);
+  font-size: 0.83rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.chip:hover {
+  border-color: var(--border-mint);
+  color: var(--primary);
+}
+
+/* Pill groups (level / time / language) */
+.pill-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pill-group-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text-meta);
+}
+
+.pill-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pill {
+  padding: 8px 14px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-elevated);
+  color: var(--text-body);
+  font-size: 0.83rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.pill:hover {
+  border-color: var(--border-mint);
+}
+
+.pill-active {
+  border-color: var(--primary);
+  color: var(--on-primary);
+  background: var(--primary);
+  font-weight: 600;
+}
+
+/* Material Upload */
+.format-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.format-chip {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-body);
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 5px 10px;
+}
+
+.dropzone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+  padding: 36px 20px;
+  border: 1.5px dashed var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--surface-elevated);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.dropzone:hover,
+.dropzone-active {
+  border-color: var(--primary);
+  background: var(--secondary-deep);
+}
+
+.dropzone-done {
+  border-style: solid;
+  border-color: var(--primary);
+}
+
+.dropzone-input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.dropzone-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--secondary-deep);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropzone-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.dropzone-title {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.dropzone-hint {
+  font-size: 0.82rem;
+  color: var(--text-meta);
+}
+
+.dropzone-success {
+  color: var(--primary);
+}
+
+.dropzone-error {
+  color: var(--danger);
+}
+
+.upload-hint {
+  font-size: 0.8rem;
+  color: var(--text-meta);
+  margin: 0;
+}
+
+/* Lesson Plan */
+.lesson-plan-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.concept-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  counter-reset: concept;
+}
+
+.concept-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 14px 0 14px 42px;
+  position: relative;
+  border-top: 1px solid var(--border);
+}
+
+.concept-item:first-child {
+  border-top: none;
+}
+
+.concept-item::before {
+  counter-increment: concept;
+  content: counter(concept);
+  position: absolute;
+  left: 0;
+  top: 12px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--secondary-deep);
+  border: 1px solid var(--border-mint);
+  color: var(--primary);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.concept-title {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.concept-summary {
+  color: var(--text-meta);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+/* Classroom layout: lesson content + avatar side by side */
+.classroom-layout {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.step-progress-chip {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-meta);
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  padding: 4px 10px;
+}
+
+.step-concept-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.step-explanation {
+  font-size: 1.02rem;
+  line-height: 1.65;
+  color: var(--text-body);
+  max-width: 62ch;
+}
+
+.step-example,
+.step-visual {
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+}
+
+.step-example p,
+.step-visual p {
+  margin: 0;
+  color: var(--text-body);
+  line-height: 1.5;
+}
+
+.step-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 6px;
+}
+
+.step-tag-warn {
+  color: var(--amber);
+}
+
+.question-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-top: 1px solid var(--border);
+  padding-top: 18px;
+}
+
+.question-prompt {
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.mcq-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mcq-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  color: var(--text-body);
+  cursor: pointer;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-elevated);
+  transition: border-color 0.15s ease;
+}
+
+.mcq-option:has(input:checked) {
+  border-color: var(--primary);
+  background: var(--secondary-deep);
+  color: var(--text-primary);
+}
+
+.evaluation {
+  border-top: 1px solid var(--border);
+  padding-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.evaluation p {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--text-body);
+}
+
+.evaluation-incorrect .step-tag,
+.evaluation-partial .step-tag {
+  color: var(--amber);
+}
+
+.misconception {
+  color: var(--amber);
+  font-size: 0.9rem;
+  background: var(--amber-wash);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+}
+
+.reexplanation {
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+}
+
+.evaluation-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.end-button {
+  padding: 12px 22px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.end-button:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* Frame the third-party TrugenAgentWidget. On desktop the panel around it
+   is a full-height docked column (see ".trugen-float" below), so we
+   stretch this frame - and its direct child, the widget's own root
+   element - to fill all of the available width/height. This only sets
+   dimensions on the container we render; it never reaches into the
+   widget's internal (cross-origin) DOM. */
+.avatar-widget-frame {
+  position: relative;
+  isolation: isolate;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+}
+
+.avatar-widget-frame > * {
+  width: 100%;
+  height: 100%;
+}
+
+/* Static placeholder shown while/if the third-party TrugenAgentWidget
+   hasn't mounted its own UI yet. Sits behind the widget (z-index: 0) and
+   ignores pointer events so it never blocks the real widget once it
+   renders on top of it. */
+.avatar-placeholder-text {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 0;
+  padding: 24px;
+  padding-top: 100px;
+  text-align: center;
+  color: var(--text-meta);
+  font-size: 0.95rem;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Some embeddable widgets switch to `position: fixed; inset: 0` (or similar
+   full-viewport inline styles) to present a "fullscreen" call UI. Since
+   that's set inline via JS, target it by attribute selector and pull it
+   back into normal flow, contained by .avatar-widget-frame above. */
+.avatar-widget-frame [style*="position: fixed"],
+.avatar-widget-frame [style*="position:fixed"],
+.avatar-widget-frame [style*="position: absolute"][style*="inset: 0"] {
+  position: absolute !important;
+  inset: 0 !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  transform: none !important;
+}
+
+@keyframes status-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* Teaching screen: TeachingStage (the visual teaching canvas, full width)
+   stacked above the lesson concept/question panel. The TruGen avatar is no
+   longer part of this layout — it floats independently above the whole
+   classroom (see ".trugen-float" below) so this canvas stays the dominant
+   surface on screen. */
+.classroom-layout-teaching {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.teaching-stage {
+  position: relative;
+  display: flex;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 28px;
+  min-height: 480px;
+}
+
+.stage-content-col {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --------------------------------------------------------------------
+   AI Teacher panel (docked column on desktop)
+   --------------------------------------------------------------------
+   TruGen is configured as a Widget (not Full View): it already renders
+   its own card with a header, video, Talk/Chat controls, and a chat
+   transcript, so this wrapper adds no duplicate header/chat chrome of
+   its own - it only sizes the column the widget lives in so that video
+   reads as the classroom's dominant "AI teacher standing beside you"
+   element instead of a small chatbot tucked in a corner.
+   ".shell" (above) lays out the classroom in two columns; this panel is
+   the right one, pinned to the viewport with `position: sticky` so it
+   stays fully visible while the lesson content on the left scrolls. */
+.trugen-float {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  min-height: 700px;
+  z-index: 40; /* above classroom content, below any modal/dialog UI */
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.teaching-loading-caption {
+  margin: 0;
+  color: var(--text-meta);
+  font-size: 0.85rem;
+  align-self: center;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.teaching-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease 0.25s;
+}
+
+.teaching-content.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.teaching-heading-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.teaching-phase-tag {
+  align-self: flex-start;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--primary);
+  background: var(--secondary-deep);
+  border: 1px solid var(--border-mint);
+  border-radius: var(--radius-full);
+  padding: 4px 10px;
+}
+
+.teaching-heading {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.teaching-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 0;
+}
+
+.teaching-bullets {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: var(--text-body);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.teaching-bullets li::marker {
+  color: var(--primary);
+}
+
+.beat-nav {
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.beat-nav-button {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-elevated);
+  color: var(--text-primary);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.beat-nav-button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.beat-nav-button:not(:disabled):hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.beat-nav-label {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-meta);
+}
+
+/* Visual Explanation panel — styled as an active teaching surface, not a
+   decorative dashboard widget: same card language as the rest of the
+   classroom, with the visualization itself given room to breathe. */
+.visual-explanation {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 420px;
+}
+
+.visual-explanation-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.visual-explanation-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.visual-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.visual-header-right {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.visual-subject-badge {
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+  color: var(--text-meta);
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  padding: 4px 10px;
+  white-space: nowrap;
+}
+
+.visual-badge {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.03em;
+  color: var(--primary);
+  background: var(--secondary-deep);
+  border: 1px solid var(--border-mint);
+  border-radius: var(--radius-full);
+  padding: 4px 10px;
+  white-space: nowrap;
+}
+
+/* The canvas is the active teaching surface — every renderer (Mermaid,
+   React Flow, JSXGraph, Three.js, D3, p5, Cytoscape) mounts inside it at
+   the same size, so switching visual types never causes a layout jump. */
+.visual-canvas {
+  position: relative;
+  flex: 1;
+  min-height: 320px;
+  border-radius: var(--radius);
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.visual-canvas-fullscreen {
+  background: #111620;
+  border-radius: 0;
+}
+
+/* Shared loading / empty / error placeholders used by every renderer */
+.visual-render-state {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 32px 16px;
+  text-align: center;
+  color: var(--text-meta);
+  font-size: 0.88rem;
+}
+
+.visual-render-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--surface-elevated);
+}
+
+.visual-render-error p {
+  color: var(--danger);
+}
+
+.visual-spinner {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--border-strong);
+  border-top-color: var(--primary);
+  animation: visual-spin 0.8s linear infinite;
+}
+
+@keyframes visual-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Mermaid — static diagrams (flowcharts, processes, mindmaps) */
+.mermaid-visual {
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+}
+
+.mermaid-visual svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* React Flow — architecture / algorithm / data-structure diagrams */
+.reactflow-visual {
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+}
+
+/* JSXGraph — interactive math/geometry. Given a light "whiteboard" surface
+   so the library's default axis/point rendering stays legible without
+   fighting its internal SVG styling. */
+.jsxgraph-visual {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  padding: 10px;
+}
+
+.jsxgraph-board {
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: #f7f9fc;
+}
+
+/* Three.js — 3D scenes */
+.three-visual {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+}
+
+.three-canvas-wrap {
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  display: flex;
+}
+
+.three-canvas-wrap canvas {
+  display: block;
+}
+
+.three-reset-button {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  border: 1px solid var(--border-strong);
+  background: rgba(17, 22, 32, 0.85);
+  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.three-reset-button:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* D3 — interactive timelines / data visualizations */
+.d3-visual {
+  width: 100%;
+  height: 100%;
+  min-height: 260px;
+  display: flex;
+  align-items: center;
+}
+
+.d3-canvas-wrap {
+  width: 100%;
+}
+
+/* p5 — animated simulations */
+.p5-visual {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+}
+
+.p5-canvas-wrap {
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+  display: flex;
+}
+
+.p5-canvas-wrap canvas {
+  display: block;
+  border-radius: var(--radius-sm);
+}
+
+.p5-controls {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  display: flex;
+  gap: 6px;
+}
+
+/* Cytoscape — networks / knowledge graphs */
+.cytoscape-visual {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+}
+
+.cytoscape-canvas-wrap {
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+}
+
+/* Toolbar shared by every renderer (fullscreen always; reset for anything
+   interactive/stateful) */
+.visual-toolbar {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 3;
+}
+
+.visual-toolbar-button {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-strong);
+  background: rgba(17, 22, 32, 0.85);
+  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.visual-toolbar-button:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.visual-explanation-text {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--text-meta);
+}
+
+/* Assessment / Report */
+.quiz-question {
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.quiz-question:last-of-type {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.report-headline {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.report-headline-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.report-sub {
+  margin: 0;
+  color: var(--text-meta);
+  font-size: 0.9rem;
+  max-width: 40ch;
+}
+
+.report-section {
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.report-section p {
+  margin: 4px 0 0;
+  color: var(--text-body);
+  line-height: 1.5;
+}
+
+/* Mastery ring */
+.mastery-ring {
+  --pct: 0;
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: conic-gradient(
+    var(--primary) calc(var(--pct) * 1%),
+    var(--surface-elevated) 0
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+
+.mastery-ring-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.mastery-ring-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.mastery-ring-label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-meta);
+}
+
+/* Learner Profile */
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.profile-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Responsive */
+@media (max-width: 720px) {
+  .classroom-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Tablet: keep the AI Teacher panel docked and visible, just narrower,
+   so the classroom content gets more breathing room. */
+@media (max-width: 1200px) {
+  .shell {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 34%);
+  }
+}
+
+@media (max-width: 900px) {
+  .teaching-stage {
+    min-height: 0;
+    padding: 20px;
+  }
+
+  /* Below tablet width a permanent right column leaves too little room
+     for the classroom, so the shell collapses to a single column and
+     the AI Teacher becomes a floating, expandable widget again instead
+     of a fixed sidebar - matching the original corner-pinned behavior. */
+  .shell {
+    grid-template-columns: 1fr;
+  }
+
+  .trugen-float {
+    position: fixed;
+    top: auto;
+    right: 20px;
+    bottom: 20px;
+    left: auto;
+    height: auto;
+    min-height: 0;
+    max-width: min(380px, calc(100vw - 40px));
+    max-height: calc(100vh - 40px);
+    border-left: none;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    background: transparent;
+    transition: max-width 0.3s ease, max-height 0.3s ease, border-radius 0.3s ease;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav {
+    padding: 16px 0;
+  }
+
+  .stat-strip,
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .topic-selector,
+  .lesson-plan,
+  .lesson-step,
+  .assessment,
+  .report,
+  .material-upload {
+    padding: 20px;
+  }
+
+  .report-headline {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* On phones the widget must never make the classroom unusable: pull in
+     the corner margin and lower the height cap further than the tablet
+     breakpoint above, so the lesson underneath stays reachable. */
+  .trugen-float {
+    right: 14px;
+    bottom: 14px;
+    max-width: calc(100vw - 28px);
+    max-height: 60vh;
+  }
+
+  .zoom-control {
+    left: 14px;
+    bottom: 14px;
+  }
+}
+
+/* --------------------------------------------------------------------
+   Whole-page zoom control (bottom-left, opposite the AI Teacher panel
+   which docks/floats on the right). Fixed so it stays reachable no
+   matter how far the lesson content scrolls or how zoomed the page is.
+   -------------------------------------------------------------------- */
+.zoom-control {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 50; /* above the classroom, same tier as the teacher panel */
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-full);
+  padding: 4px;
+  box-shadow: var(--shadow-card);
+}
+
+.zoom-btn {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  line-height: 1;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.zoom-btn:hover:not(:disabled) {
+  background: var(--secondary-deep);
+  color: var(--primary-bright);
+}
+
+.zoom-btn:disabled {
+  color: var(--text-meta);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.zoom-readout {
+  min-width: 52px;
+  border: none;
+  background: transparent;
+  color: var(--text-body);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  padding: 0 4px;
+  cursor: pointer;
+  border-radius: var(--radius-full);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.zoom-readout:hover {
+  background: var(--secondary-deep);
+  color: var(--primary-bright);
+}

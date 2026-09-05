@@ -1,0 +1,27 @@
+{
+  "name": "ai-teacher",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@aiteammate/agent-widget": "^0.0.11",
+    "@xyflow/react": "^12.11.6",
+    "cytoscape": "^3.34.2",
+    "d3": "^7.9.0",
+    "jsxgraph": "^1.13.2",
+    "mermaid": "^11.17.2",
+    "p5": "^2.3.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "three": "^0.185.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.4.1"
+  }
+}
