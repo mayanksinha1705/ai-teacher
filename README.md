@@ -1,131 +1,270 @@
-# AI Teacher — Full-Stack Prototype
+# 🎓 AI Teacher
 
-A working AI Teacher app: a real TruGen avatar for live voice interaction,
-plus a lightweight backend that actually generates lesson plans, teaches
-concept-by-concept, asks comprehension questions, detects misconceptions,
-and runs a final graded assessment — all powered by a **locally running
-Ollama model**, with no external API keys.
+> **A human-like, personalized AI educator that teaches from uploaded learning materials and adapts to the student.**
 
-## Design
+AI Teacher is a full-stack AI learning platform built for the **AI Innovation Hackathon 2026**.
 
-The UI follows an "Obsidian Intelligence" workstation aesthetic: a dark
-obsidian canvas (`#0A0D12`), elevated slate surfaces, and a single electric
-mint accent (`#11E59E`) reserved for primary actions and live-state
-indicators. Plus Jakarta Sans carries all natural-language content;
-JetBrains Mono is used sparingly for technical labels (section tags,
-progress chips, format badges) to reinforce the "workstation" feel. The
-nav bar includes a live engine-status pill that pings the backend's
-`/api/health` endpoint — it reflects whether Ollama is actually reachable,
-not a static decoration.
+Instead of functioning as a basic Q&A chatbot, AI Teacher follows a structured teaching loop:
 
-## Tech stack
+**Understand → Plan → Explain → Demonstrate → Question → Evaluate → Adapt → Continue**
 
-**Client** (`/client`)
-- React + Vite (JavaScript), plain CSS
-- `@aiteammate/agent-widget` — the real TruGen avatar (voice conversation)
-- `localStorage` for a lightweight learner profile (topics studied, scores, weak concepts)
+Students can upload study materials or enter a topic, choose their learning level, available time, and language, and receive a structured learning experience with AI-generated explanations, visual learning, interactive questions, misconception detection, adaptive re-explanation, and final assessment.
 
-**Server** (`/server`)
-- Node.js + Express
-- `multer` for file uploads, `pdf-parse` / `mammoth` for text extraction
-- A dependency-free **TF-IDF retrieval layer** (`rag.js`) — chunks uploaded
-  material and retrieves the most relevant chunks for grounding, without
-  needing a vector database
-- In-memory session store (no database — resets on server restart)
-- Calls a **local Ollama server** for every generation/grading step
+---
 
-**LLM**
-- [Ollama](https://ollama.com) running locally
-- Model: `gpt-oss:120b-cloud` (Ollama's cloud-hosted large model, accessed
-  through your local Ollama installation)
+## ✨ Key Features
 
-## How it works end-to-end
+### 📚 Learn From Your Materials
 
-1. Student optionally uploads material (PDF/DOCX/TXT) — the server extracts
-   and chunks the text and indexes it with TF-IDF (real retrieval, no
-   hallucinated "RAG").
-2. Student enters a topic (or relies on the uploaded material), picks a
-   **Learning Level**, **Time Available**, and **Teaching Language**, and
-   clicks **Start Learning**.
-3. The backend asks the local LLM to generate a structured lesson plan
-   (grounded in retrieved material excerpts when available).
-4. The student steps through the plan one concept at a time: the LLM
-   generates an explanation, an example, a suggested visual, and one
-   comprehension question per concept.
-5. The student answers; the LLM grades it, explains any misconception, and
-   either advances or re-explains with a different analogy — this is real
-   adaptive behavior, not scripted branching.
-6. After all concepts, the backend generates a short final assessment,
-   grades it, and returns a report (score, strong/weak areas, a
-   recommendation, and a suggested next topic).
-7. Throughout the lesson, the real TruGen avatar is mounted for live voice
-   conversation, running independently of the generated lesson text.
+Upload learning materials in:
 
-## Known, honest limitations
+- PDF
+- DOCX
+- TXT
 
-- The TruGen avatar's own voice conversation is **not** automatically fed
-  the generated lesson script — TruGen's public integration only exposes an
-  `agentId`, with no documented API to inject dynamic lesson content into
-  its speech. The avatar is available for live Q&A alongside the lesson;
-  the structured teaching flow (explanations, questions, assessment) is
-  rendered as UI content next to it. If TruGen later exposes an API for
-  feeding it context, this is the natural place to wire it in.
-- Retrieval is TF-IDF, not embeddings — good enough for grounding a single
-  document per session without adding a vector database, but not
-  state-of-the-art semantic search.
-- Session state is in-memory only; restarting the server clears all active
-  lessons (by design — no database, per project scope). The learner profile
-  in the browser's `localStorage` persists independently of the server.
-  If the backend restarts mid-session (e.g. `npm run dev`'s file-watch
-  restarts, or `npm start` being stopped and re-run), the frontend detects
-  the resulting "session not found" error, transparently starts a new
-  session, and — for material uploads — retries automatically since the
-  file is still in the browser. For any other in-progress step, the student
-  is returned to setup with a clear message, since there is no safe way to
-  resume a lesson plan that only existed in the old session's memory.
+The system extracts and indexes the content, then retrieves relevant sections to ground AI-generated lessons.
+
+### 🧠 AI-Powered Lesson Planning
+
+AI Teacher dynamically generates a structured learning roadmap based on:
+
+- Topic
+- Uploaded material
+- Learning level
+- Available time
+- Teaching language
+
+### 👩‍🏫 Human-Like AI Teacher
+
+A real **TruGen AI avatar** provides voice-based interaction and acts as the AI Teacher during the learning session.
+
+### 🎨 Visual Learning
+
+Concepts can be presented through visual learning elements such as:
+
+- Flowcharts
+- Diagrams
+- Graphs
+- Mathematical representations
+- Concept structures
+
+### ❓ Interactive Questions
+
+The AI asks comprehension questions throughout the lesson instead of simply providing information.
+
+### 🔍 Misconception Detection
+
+The system evaluates student answers and can identify incorrect reasoning rather than only checking whether an answer is correct.
+
+### 🔄 Adaptive Teaching
+
+When a misconception is detected, AI Teacher can:
+
+1. Identify the problem
+2. Re-explain the concept
+3. Use a different explanation or analogy
+4. Provide another example
+5. Ask a new question
+6. Re-evaluate understanding
+
+### 📝 Final Assessment
+
+At the end of the lesson, the system generates an assessment and provides:
+
+- Score
+- Strong concepts
+- Weak concepts
+- Revision recommendations
+- Suggested next topic
+
+---
+
+# 🧠 How It Works
+
+```text
+Student
+   │
+   ├── Upload Material
+   │       OR
+   └── Enter Topic
+          │
+          ▼
+   Personalization
+   ├── Learning Level
+   ├── Time Available
+   └── Language
+          │
+          ▼
+   AI Lesson Planner
+          │
+          ▼
+   RAG / Material Retrieval
+          │
+          ▼
+   Structured Lesson
+          │
+          ▼
+   ┌─────────────────────────┐
+   │ Explain → Demonstrate   │
+   │          ↓              │
+   │ Ask Question            │
+   │          ↓              │
+   │ Evaluate Answer         │
+   │          ↓              │
+   │ Adapt / Re-explain      │
+   └─────────────────────────┘
+          │
+          ▼
+   Final Assessment
+          │
+          ▼
+   Learning Feedback
+   ├── Score
+   ├── Weak Areas
+   ├── Revision
+   └── Next Topic
+```
+
+---
+
+# 🛠️ Technology Stack
+
+## Frontend
+
+- React
+- Vite
+- JavaScript
+- CSS
+- TruGen AI Agent Widget
+- localStorage for learner profile
+
+## Backend
+
+- Node.js
+- Express
+- Multer
+- PDF parsing
+- DOCX extraction
+- TF-IDF based retrieval
+- In-memory session management
+
+## AI
+
+- Ollama
+- `gpt-oss:120b-cloud`
+
+## AI Avatar & Voice
+
+- TruGen AI
+
+---
+
+# 📖 RAG Pipeline
+
+AI Teacher uses a lightweight retrieval pipeline for uploaded learning materials.
+
+```text
+PDF / DOCX / TXT
+       │
+       ▼
+Text Extraction
+       │
+       ▼
+Text Chunking
+       │
+       ▼
+TF-IDF Indexing
+       │
+       ▼
+Relevant Chunk Retrieval
+       │
+       ▼
+LLM Prompt
+       │
+       ▼
+Grounded Lesson
+```
+
+The current prototype uses **TF-IDF retrieval instead of a vector database** to keep the system lightweight and easy to run.
+
+---
+
+# 🚀 Getting Started
 
 ## Prerequisites
 
-1. **Node.js 18+** (for both client and server)
-2. **Ollama** installed and running locally:
-   ```bash
-   ollama serve
-   ```
-3. The model pulled and available:
-   ```bash
-   ollama pull gpt-oss:120b-cloud
-   ```
+- Node.js 18+
+- Ollama
+- `gpt-oss:120b-cloud`
 
-## Setup & run
+Start Ollama:
 
-Open **two terminals**.
+```bash
+ollama serve
+```
 
-### Terminal 1 — backend
+Make sure the model is available:
+
+```bash
+ollama pull gpt-oss:120b-cloud
+```
+
+---
+
+## 1. Clone the Repository
+
+```bash
+git clone https://github.com/mayanksinha1705/ai-teacher.git
+cd ai-teacher
+```
+
+---
+
+## 2. Start the Backend
+
 ```bash
 cd server
 npm install
 npm run dev
 ```
-This starts the API on `http://localhost:8787` and prints which Ollama
-URL/model it's configured for. Copy `.env.example` to `.env` first if you
-want to override the defaults (different port, different model name, etc.):
+
+The backend runs on:
+
+```text
+http://localhost:8787
+```
+
+If required, create your environment file:
+
 ```bash
 cp .env.example .env
 ```
 
-### Terminal 2 — frontend
+---
+
+## 3. Start the Frontend
+
+Open another terminal:
+
 ```bash
 cd client
 npm install
 npm run dev
 ```
-Open the printed URL (typically `http://localhost:5173`). The Vite dev
-server proxies all `/api/*` calls to the backend automatically.
 
-## Project structure
+The frontend normally runs on:
 
+```text
+http://localhost:5173
 ```
+
+---
+
+# 📁 Project Structure
+
+```text
 ai-teacher/
+│
 ├── client/
 │   ├── src/
 │   │   ├── components/
@@ -137,52 +276,180 @@ ai-teacher/
 │   │   │   ├── Assessment.jsx
 │   │   │   ├── LearnerProfile.jsx
 │   │   │   └── TrugenTeacher.jsx
-│   │   ├── api.js          # backend API client
-│   │   ├── profile.js       # localStorage learner profile
+│   │   │
+│   │   ├── api.js
+│   │   ├── profile.js
 │   │   ├── App.jsx
 │   │   ├── main.jsx
 │   │   └── index.css
+│   │
 │   ├── index.html
 │   ├── package.json
 │   └── vite.config.js
+│
 ├── server/
 │   ├── src/
 │   │   ├── routes/
 │   │   │   ├── upload.js
 │   │   │   ├── lesson.js
 │   │   │   └── assessment.js
+│   │   │
 │   │   ├── index.js
-│   │   ├── ollama.js        # Ollama chat client
-│   │   ├── rag.js           # TF-IDF chunking + retrieval
-│   │   ├── store.js         # in-memory sessions
-│   │   └── textExtract.js   # pdf/docx/txt extraction
+│   │   ├── ollama.js
+│   │   ├── rag.js
+│   │   ├── store.js
+│   │   └── textExtract.js
+│   │
 │   ├── .env.example
 │   └── package.json
+│
 └── README.md
 ```
 
-## API summary (backend)
+---
 
-| Method | Path                    | Purpose                                    |
-|--------|-------------------------|---------------------------------------------|
-| GET    | `/api/health`           | Check server + Ollama config                |
-| POST   | `/api/session`          | Create a new in-memory session               |
-| POST   | `/api/upload`           | Upload & index material (multipart/form)     |
-| POST   | `/api/lesson/plan`      | Generate the lesson plan                     |
-| POST   | `/api/lesson/step`      | Get the next concept's explanation+question  |
-| POST   | `/api/lesson/answer`    | Grade an answer, detect misconceptions       |
-| POST   | `/api/lesson/advance`   | Move to the next concept                     |
-| POST   | `/api/assessment/generate` | Generate the final quiz                  |
-| POST   | `/api/assessment/submit`   | Grade the quiz, return the report        |
+# 🔌 API
 
-## Troubleshooting
+| Method | Endpoint | Purpose |
+|---|---|---|
+| GET | `/api/health` | Check backend and Ollama |
+| POST | `/api/session` | Create learning session |
+| POST | `/api/upload` | Upload and index material |
+| POST | `/api/lesson/plan` | Generate lesson roadmap |
+| POST | `/api/lesson/step` | Generate teaching step |
+| POST | `/api/lesson/answer` | Evaluate student answer |
+| POST | `/api/lesson/advance` | Advance lesson |
+| POST | `/api/assessment/generate` | Generate final assessment |
+| POST | `/api/assessment/submit` | Grade assessment |
 
-- **"Could not reach Ollama..."** — make sure `ollama serve` is running and
-  the model is pulled (`ollama pull gpt-oss:120b-cloud`), and that
-  `OLLAMA_URL`/`OLLAMA_MODEL` in `server/.env` (if you created one) match
-  your local setup.
-- **Model returns invalid JSON occasionally** — the backend already retries
-  once automatically; if it still fails, try a lower-variance prompt (edit
-  the `temperature` in `server/src/ollama.js`) or a different model.
-#   a i - t e a c h e r  
- 
+---
+
+# 🎯 Example Learning Flow
+
+```text
+Upload Physics Notes
+        ↓
+Select Beginner
+        ↓
+Select 10 Minutes
+        ↓
+Generate Lesson Roadmap
+        ↓
+Learn Concept
+        ↓
+Visual Explanation
+        ↓
+AI Teacher Interaction
+        ↓
+Comprehension Question
+        ↓
+Student Answer
+        ↓
+AI Evaluation
+        ↓
+Misconception Detected
+        ↓
+Adaptive Re-explanation
+        ↓
+New Question
+        ↓
+Final Assessment
+        ↓
+Learning Report
+```
+
+---
+
+# 🏆 AI Innovation Hackathon 2026
+
+**Project:** AI Teacher  
+**Category:** AI / Education  
+**Event:** Bharat Academix AI Innovation Hackathon 2026
+
+AI Teacher was built to demonstrate how AI can move beyond simple question answering toward **structured, interactive, personalized, and adaptive teaching**.
+
+---
+
+# 🔐 Security
+
+Environment variables and API keys should never be committed to the repository.
+
+Create:
+
+```text
+server/.env
+```
+
+using:
+
+```text
+server/.env.example
+```
+
+Make sure `.env` is included in `.gitignore`.
+
+---
+
+# ⚠️ Current Prototype Limitations
+
+### TruGen Integration
+
+The TruGen avatar currently provides live voice interaction, but the generated lesson content is not automatically injected into TruGen's conversation.
+
+The structured teaching engine and TruGen avatar therefore operate alongside each other.
+
+### Retrieval
+
+The current RAG implementation uses TF-IDF retrieval rather than embedding-based semantic search or a vector database.
+
+### Session Storage
+
+Learning sessions are currently stored in memory and are cleared when the backend restarts.
+
+The learner profile is stored separately in the browser using `localStorage`.
+
+---
+
+# 📺 Demo
+
+**Demo Video:**  
+Add the YouTube/Loom demo link here.
+
+**Live Demo:**  
+Add the deployed application link here.
+
+---
+
+# 👥 Team
+
+**Team Leader:** Mayank Sinha
+
+_Add team members here if applicable._
+
+---
+
+# 📌 Project Status
+
+**Working Hackathon Prototype**
+
+The current prototype includes:
+
+- Document ingestion
+- Material retrieval
+- AI lesson planning
+- Personalized learning
+- Concept-by-concept teaching
+- Visual explanations
+- Interactive questions
+- Answer evaluation
+- Misconception detection
+- Adaptive re-explanation
+- Final assessment
+- Learning feedback
+- AI avatar and voice interaction
+
+---
+
+## ⭐ Built for AI Innovation Hackathon 2026
+
+**AI Teacher — Making AI learn like a teacher, not just answer like a chatbot.**
